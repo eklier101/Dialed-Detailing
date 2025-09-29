@@ -96,6 +96,22 @@
       font-weight: bold;
       text-decoration: none;
     }
+    .card {
+  display: block;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
   </style>
 </head>
 <body>
@@ -137,33 +153,47 @@
 
 <section id="pricing">
   <h2>Pricing</h2>
-  <p style="text-align:center;">Prices vary based on vehicle size. Contact us for custom quotes on specialty vehicles.</p>
+  <p style="text-align:center;">Prices vary based on vehicle size. Click a service to schedule!</p>
 
   <div class="pricing">
-    <div class="card">
+    <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Exterior%20Detailing" target="_blank" class="card">
       <h3>Exterior Wash</h3>
       <p>Small: $25<br>Sedan: $30<br>SUV/Truck: $40</p>
-    </div>
-    <div class="card">
+      <p><strong>Book Now →</strong></p>
+    </a>
+
+    <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Interior" target="_blank" class="card">
       <h3>Interior Detail</h3>
       <p>Small: $40<br>Sedan: $50<br>SUV/Truck: $60</p>
-    </div>
-    <div class="card">
+      <p><strong>Book Now →</strong></p>
+    </a>
+
+    <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Full%20Detail" target="_blank" class="card">
       <h3>Full Detail</h3>
       <p>Small: $60<br>Sedan: $75<br>SUV/Truck: $90</p>
-    </div>
+      <p><strong>Book Now →</strong></p>
+    </a>
   </div>
 
   <h3 style="text-align:center; margin-top:2rem;">Add-On Services</h3>
   <div class="pricing">
-    <div class="card">
+    <a href="https://calendly.com/dialeddetailing/wax" target="_blank" class="card">
       <h3>Wax</h3>
       <p>+ $25 (any size)</p>
-    </div>
-    <div class="card">
+      <p><strong>Book Now →</strong></p>
+    </a>
+
+    <a href="https://calendly.com/dialeddetailing/ceramic-coating" target="_blank" class="card">
+      <h3>Ceramic Coating</h3>
+      <p>Starting at $150<br><small>(varies by vehicle & condition)</small></p>
+      <p><strong>Book Now →</strong></p>
+    </a>
+
+    <a href="https://calendly.com/dialeddetailing/engine-bay" target="_blank" class="card">
       <h3>Engine Bay Cleaning</h3>
       <p>+ $30</p>
-    </div>
+      <p><strong>Book Now →</strong></p>
+    </a>
   </div>
 </section>
 
@@ -172,7 +202,7 @@
     <p>Ready to get your car dialed in? Reach out today!</p>
     <div class="contact-info">
       <p>📞 Phone: <a href="tel:+9197045648">(919) 704-5648</a></p>
-      <p>✉️ Email: <a href="mailto:dialed-detailing@gmail.com">dialeddetailing@gmail.com</a></p>
+      <p>✉️ Email: <a href="mailto:dialed-detailing@gmail.com">dialed-detailing@gmail.com</a></p>
     </div>
   </section>
 
