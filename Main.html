@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dialed Detailing</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    header {
+      background: #000;
+      color: #fff;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0 0;
+    }
+
+    nav {
+      background: #222;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0.8rem;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 3rem 1rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .services, .pricing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .pricing .card h3 {
+      margin-top: 0;
+      color: #000;
+    }
+
+    footer {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+
+    .contact-info {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .contact-info a {
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Dialed Detailing</h1>
+    <p>Professional Car Detailing by Local High Schoolers</p>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about">
+    <h2>About Us</h2>
+    <p>We’re a team of motivated high schoolers who are passionate about cars and delivering high-quality detailing at affordable prices. At Dialed Detailing, we take pride in treating every car like it’s our own.</p>
+  </section>
+
+  <section id="services">
+    <h2>Our Services</h2>
+    <div class="services">
+      <div class="card">
+        <h3>Exterior Wash</h3>
+        <p>Hand wash, wax, and shine to make your car stand out.</p>
+      </div>
+      <div class="card">
+        <h3>Interior Detail</h3>
+        <p>Vacuuming, carpet shampoo, and deep cleaning for a spotless interior.</p>
+      </div>
+      <div class="card">
+        <h3>Full Detail</h3>
+        <p>Complete inside and out package for the ultimate clean.</p>
+      </div>
+    </div>
+  </section>
+
+<section id="pricing">
+  <h2>Pricing</h2>
+  <p style="text-align:center;">Prices vary based on vehicle size. Contact us for custom quotes on specialty vehicles.</p>
+
+  <div class="pricing">
+    <div class="card">
+      <h3>Exterior Wash</h3>
+      <p>Small: $25<br>Sedan: $30<br>SUV/Truck: $40</p>
+    </div>
+    <div class="card">
+      <h3>Interior Detail</h3>
+      <p>Small: $40<br>Sedan: $50<br>SUV/Truck: $60</p>
+    </div>
+    <div class="card">
+      <h3>Full Detail</h3>
+      <p>Small: $60<br>Sedan: $75<br>SUV/Truck: $90</p>
+    </div>
+  </div>
+
+  <h3 style="text-align:center; margin-top:2rem;">Add-On Services</h3>
+  <div class="pricing">
+    <div class="card">
+      <h3>Wax</h3>
+      <p>+ $25 (any size)</p>
+    </div>
+    <div class="card">
+      <h3>Engine Bay Cleaning</h3>
+      <p>+ $30</p>
+    </div>
+  </div>
+</section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Ready to get your car dialed in? Reach out today!</p>
+    <div class="contact-info">
+      <p>📞 Phone: <a href="tel:+9197045648">(919) 704-5648</a></p>
+      <p>✉️ Email: <a href="mailto:dialeddetailing@gmail.com">dialeddetailing@gmail.com</a></p>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Dialed Detailing. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
