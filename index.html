@@ -4,115 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dialed Detailing</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      background: #f8f9fa;
-      color: #333;
-    }
-
-    header {
-      background: #000;
-      color: #fff;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 3rem;
-      margin: 0;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      margin: 0.5rem 0 0;
-    }
-
-    nav {
-      background: #222;
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      padding: 0.8rem;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    section {
-      padding: 3rem 1rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .services, .pricing {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .pricing .card h3 {
-      margin-top: 0;
-      color: #000;
-    }
-
-    footer {
-      background: #000;
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-
-    .contact-info {
-      text-align: center;
-      margin-top: 1rem;
-    }
-
-    .contact-info a {
-      color: #000;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .card {
-  display: block;
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  text-align: center;
-  text-decoration: none;
-  color: #333;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -125,7 +17,7 @@
     <a href="#about">About</a>
     <a href="#services">Services</a>
     <a href="#pricing">Pricing</a>
-    <a href="#availability">Availability</a>                            
+    <a href="#availability">Availability</a>
     <a href="#contact">Contact</a>
   </nav>
 
@@ -152,57 +44,57 @@
     </div>
   </section>
 
-<section id="pricing">
-  <h2>Pricing</h2>
-  <p style="text-align:center;">Prices vary based on vehicle size. Click a service to schedule!</p>
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <p style="text-align:center;">Prices vary based on vehicle size. Click a service to schedule!</p>
 
-  <div class="pricing">
-    <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Exterior%20Detailing" target="_blank" class="card">
-      <h3>Exterior Wash</h3>
-      <p>Small: $25<br>Sedan: $30<br>SUV/Truck: $40</p>
-      <p><strong>Book Now →</strong></p>
-    </a>
+    <div class="pricing">
+      <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Exterior%20Detailing" target="_blank" class="card">
+        <h3>Exterior Wash</h3>
+        <p>Small: $25<br>Sedan: $30<br>SUV/Truck: $40</p>
+        <p><strong>Book Now →</strong></p>
+      </a>
 
-    <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Interior" target="_blank" class="card">
-      <h3>Interior Detail</h3>
-      <p>Small: $40<br>Sedan: $50<br>SUV/Truck: $60</p>
-      <p><strong>Book Now →</strong></p>
-    </a>
+      <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Interior" target="_blank" class="card">
+        <h3>Interior Detail</h3>
+        <p>Small: $40<br>Sedan: $50<br>SUV/Truck: $60</p>
+        <p><strong>Book Now →</strong></p>
+      </a>
 
-    <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Full%20Detail" target="_blank" class="card">
-      <h3>Full Detail</h3>
-      <p>Small: $60<br>Sedan: $75<br>SUV/Truck: $90</p>
-      <p><strong>Book Now →</strong></p>
-    </a>
-  </div>
-
-  <h3 style="text-align:center; margin-top:2rem;">Add-On Services</h3>
-  <div class="pricing">
-    <div class="card">
-      <h3>Wax</h3>
-      <p>+ $25 (any size)</p>
+      <a href="https://app.acuityscheduling.com/schedule.php?owner=37090037&appointmentType=category:Full%20Detail" target="_blank" class="card">
+        <h3>Full Detail</h3>
+        <p>Small: $60<br>Sedan: $75<br>SUV/Truck: $90</p>
+        <p><strong>Book Now →</strong></p>
+      </a>
     </div>
-    <div class="card">
-      <h3>Engine Bay Cleaning</h3>
-      <p>+ $30</p>
+
+    <h3 style="text-align:center; margin-top:2rem;">Add-On Services</h3>
+    <div class="pricing">
+      <div class="card">
+        <h3>Wax</h3>
+        <p>+ $25 (any size)</p>
+      </div>
+      <div class="card">
+        <h3>Engine Bay Cleaning</h3>
+        <p>+ $30</p>
+      </div>
+      <div class="card">
+        <h3>Vomit or Bodily Fluid Cleaning</h3>
+        <p>+ $50</p>
+      </div>
     </div>
-    <div class="card">
-      <h3>Vomit or Bodily Fluid Cleaning</h3>
-      <p>+ $50</p>
-    </div>
-  </div>
-</section>
+  </section>
 
   <section id="availability">
     <h2>Availability</h2>
     <p>Here are our Availability Times. Contact us below to set up an Appointment</p>
-    
+  </section>
 
   <section id="contact">
     <h2>Contact Us</h2>
     <p>Ready to get your car dialed in? Reach out today! Text or Email us</p>
     <div class="contact-info">
-      <p>📞 Phone: <a href="tel:+9197045648">(919) 704-5648</a></p>
+      <p>📞 Phone: <a href="tel:+19197045648">(919) 704-5648</a></p>
       <p>✉️ Email: <a href="mailto:dialed-detailing@gmail.com">dialed-detailing@gmail.com</a></p>
     </div>
   </section>
