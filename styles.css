@@ -171,3 +171,25 @@ button {
 button:hover {
   background: #333;
 }
+nav {
+  text-align:center;
+  margin:1rem 0;
+}
+nav a {
+  margin:0 0.5rem;
+  text-decoration:none;
+  color:#0078ff;
+}
+.card {
+  border:1px solid #ccc;
+  border-radius:10px;
+  padding:1rem;
+  transition:transform .2s;
+  cursor:pointer;
+}
+.card:hover { transform:scale(1.05); }
+.form-section { max-width:500px; margin:auto; padding:1rem; }
+form { display:flex; flex-direction:column; gap:.5rem; }
+button { padding:.6rem; border:none; border-radius:6px; background:#0078ff; color:white; cursor:pointer; }
+button:hover { background:#005fd1; }
+textarea { width:100%; font-family:monospace; }
