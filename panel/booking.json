@@ -1,1 +1,14 @@
-
+{
+  "availableTimes": ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM", "5:00 PM"],
+  "vehicleTypes": ["Compact", "Sedan", "SUV", "Truck", "Van"],
+  "services": [
+    {"name": "Exterior Wash", "small": 25, "sedan": 30, "suv": 40},
+    {"name": "Interior Detail", "small": 40, "sedan": 50, "suv": 60},
+    {"name": "Full Detail", "small": 60, "sedan": 75, "suv": 90}
+  ],
+  "addons": [
+    {"name": "Wax", "price": 25},
+    {"name": "Ceramic Coating", "price": 150},
+    {"name": "Engine Bay Cleaning", "price": 30}
+  ]
+}
