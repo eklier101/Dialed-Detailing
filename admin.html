@@ -56,4 +56,72 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   try {
     const res = await fetch(`${WORKER_URL}/login`, {
       method:"POST",
-      headers:{ "Content-Type":"application/j
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ email, password })
+    });
+    if(!res.ok) throw new Error("Login failed");
+    const data = await res.json();
+    token = data.token;
+    loginDiv.classList.add("hidden");
+    adminDiv.classList.remove("hidden");
+    await loadBookings();
+  } catch {
+    loginMsg.textContent = "Invalid email or password";
+  }
+});
+
+// Load bookings
+async function loadBookings() {
+  try {
+    const res = await fetch(`${WORKER_URL}/get-bookings`);
+    bookings = await res.json();
+    renderTable();
+  } catch(err) {
+    console.error("Failed to load bookings", err);
+  }
+}
+
+// Render table
+function renderTable() {
+  const tbody = document.querySelector("#scheduleTable tbody");
+  tbody.innerHTML = "";
+  const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  days.forEach(day => {
+    const tr = document.createElement("tr");
+    const tdDay = document.createElement("td");
+    tdDay.textContent = day;
+    const tdTimes = document.createElement("td");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = bookings[day] || "";
+    input.dataset.day = day;
+    tdTimes.appendChild(input);
+    tr.appendChild(tdDay);
+    tr.appendChild(tdTimes);
+    tbody.appendChild(tr);
+  });
+}
+
+// Save button
+document.getElementById("saveBtn").addEventListener("click", async () => {
+  const inputs = document.querySelectorAll("#scheduleTable input");
+  inputs.forEach(input => { bookings[input.dataset.day] = input.value; });
+  try {
+    await fetch(`${WORKER_URL}/update-bookings`, {
+      method:"POST",
+      headers:{ 
+        "Content-Type":"application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ bookings })
+    });
+    saveMsg.textContent = "Bookings updated successfully!";
+    setTimeout(()=>saveMsg.textContent="",3000);
+  } catch {
+    saveMsg.textContent = "Failed to save bookings";
+  }
+});
+</script>
+
+</body>
+</html>
