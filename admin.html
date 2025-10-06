@@ -1,151 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin – Dialed Detailing</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dialed Detailing Admin</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    .container { max-width:900px; margin:2rem auto; padding:1rem; background:#fff; border-radius:8px; }
-    textarea { width:100%; min-height: 320px; font-family: monospace; }
-    .row { display:flex; gap:1rem; }
-    .col { flex:1; }
+    body { font-family: Arial, sans-serif; padding: 2rem; background:#f5f5f5; }
+    .login, .admin-panel { max-width: 600px; margin: auto; padding: 1rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);}
+    .hidden { display: none; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 0.5rem; border: 1px solid #ddd; text-align: left; }
+    input[type="text"], input[type="password"] { width: 100%; padding: 0.5rem; margin-bottom: 1rem; }
+    button { padding: 0.5rem 1rem; cursor: pointer; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Admin Panel</h1>
-    <nav><a href="index.html">Home</a> <a href="booking.html">Book</a></nav>
-  </header>
 
-  <main class="container">
-    <div id="loginBox">
-      <h2>Sign In</h2>
-      <label>Email</label>
-      <input id="loginEmail" type="email" placeholder="admin email" />
-      <label>Password</label>
-      <input id="loginPassword" type="password" placeholder="password" />
-      <button id="loginBtn">Login</button>
-      <p id="loginMsg"></p>
-    </div>
+  <div class="login">
+    <h2>Admin Login</h2>
+    <input type="text" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    <p id="loginMsg" style="color:red;"></p>
+  </div>
 
-    <div id="adminBox" style="display:none;">
-      <h2>Booking Settings (editable JSON)</h2>
-      <p>Make changes and click <strong>Save Settings</strong>. Changes are saved encrypted in Workers KV.</p>
-      <textarea id="settingsArea"></textarea>
-      <div style="margin-top:1rem;">
-        <button id="saveSettingsBtn">Save Settings</button>
-        <button id="loadBookingsBtn">Load Bookings (Admin)</button>
-        <button id="logoutBtn" style="float:right;">Logout</button>
-      </div>
+  <div class="admin-panel hidden">
+    <h2>Bookings / Schedule</h2>
+    <table id="scheduleTable">
+      <thead>
+        <tr><th>Day</th><th>Available Times</th></tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be generated dynamically -->
+      </tbody>
+    </table>
+    <button id="saveBtn">Save Changes</button>
+    <p id="saveMsg" style="color:green;"></p>
+  </div>
 
-      <h3 style="margin-top:1rem;">Bookings</h3>
-      <div id="bookingsList" style="max-height:300px; overflow:auto; border:1px solid #ddd; padding:0.5rem;"></div>
-    </div>
-  </main>
+  <script>
+    const WORKER_URL = "https://dialed-worker.YOURNAME.workers.dev"; // Replace with your deployed Worker URL
 
-<script>
-const API_BASE = (location.origin.endsWith('/') ? location.origin : location.origin);
+    let token = null;
+    let bookings = {};
 
-function setMsg(el, txt, ok=true){ el.textContent = txt; el.style.color = ok ? 'green' : 'red'; }
+    const loginDiv = document.querySelector(".login");
+    const adminDiv = document.querySelector(".admin-panel");
+    const loginMsg = document.getElementById("loginMsg");
+    const saveMsg = document.getElementById("saveMsg");
 
-async function postJson(path, body, token) {
-  return fetch(`${API_BASE}/${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...(token ? { 'Authorization': 'Bearer ' + token } : {}) },
-    body: JSON.stringify(body)
-  }).then(r => r.json());
-}
+    // Login button
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-async function getJson(path, token) {
-  return fetch(`${API_BASE}/${path}`, {
-    method: 'GET',
-    headers: { ...(token ? { 'Authorization': 'Bearer ' + token } : {}) }
-  }).then(r => r.json());
-}
-
-document.getElementById('loginBtn').addEventListener('click', async () => {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const msg = document.getElementById('loginMsg');
-  setMsg(msg, 'Signing in...');
-  try {
-    const res = await postJson('login', { email, password });
-    if (res && res.ok && res.token) {
-      localStorage.setItem('adminToken', res.token);
-      setMsg(msg, 'Signed in', true);
-      showAdmin();
-    } else {
-      setMsg(msg, res.message || 'Sign in failed', false);
-    }
-  } catch (e) {
-    setMsg(msg, 'Error: ' + e.message, false);
-  }
-});
-
-async function showAdmin() {
-  document.getElementById('loginBox').style.display = 'none';
-  document.getElementById('adminBox').style.display = 'block';
-  await loadSettings();
-}
-
-async function loadSettings() {
-  const token = localStorage.getItem('adminToken');
-  try {
-    const data = await getJson('settings', token);
-    document.getElementById('settingsArea').value = JSON.stringify(data, null, 2);
-    setMsg(document.getElementById('loginMsg'), 'Settings loaded', true);
-  } catch (e) {
-    setMsg(document.getElementById('loginMsg'), 'Failed loading settings', false);
-  }
-}
-
-document.getElementById('saveSettingsBtn').addEventListener('click', async () => {
-  const token = localStorage.getItem('adminToken');
-  const area = document.getElementById('settingsArea');
-  try {
-    const json = JSON.parse(area.value);
-    const res = await fetch('/settings', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify(json)
+      try {
+        const res = await fetch(`${WORKER_URL}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        if (!res.ok) throw new Error("Login failed");
+        const data = await res.json();
+        token = data.token;
+        loginDiv.classList.add("hidden");
+        adminDiv.classList.remove("hidden");
+        await loadBookings();
+      } catch (err) {
+        loginMsg.textContent = "Invalid email or password";
+      }
     });
-    if (res.ok) {
-      setMsg(document.getElementById('loginMsg'), 'Settings saved', true);
-    } else {
-      setMsg(document.getElementById('loginMsg'), 'Save failed', false);
-    }
-  } catch (err) {
-    setMsg(document.getElementById('loginMsg'), 'Invalid JSON: ' + err.message, false);
-  }
-});
 
-document.getElementById('loadBookingsBtn').addEventListener('click', async () => {
-  const token = localStorage.getItem('adminToken');
-  try {
-    const items = await getJson('bookings', token);
-    const list = document.getElementById('bookingsList');
-    list.innerHTML = '';
-    if (!items || items.length === 0) list.innerHTML = '<p>No bookings yet.</p>';
-    else {
-      items.forEach(it => {
-        const d = document.createElement('div');
-        d.style.borderBottom = '1px solid #eee';
-        d.style.padding = '6px 0';
-        d.innerHTML = `<strong>${it.data.name}</strong> — ${it.data.service} — ${it.data.date} ${it.data.time}<br><small>${it.data.email} • ${it.data.phone}</small>`;
-        list.appendChild(d);
+    // Load bookings from Worker
+    async function loadBookings() {
+      try {
+        const res = await fetch(`${WORKER_URL}/get-bookings`);
+        bookings = await res.json();
+        renderTable();
+      } catch (err) {
+        console.error("Failed to load bookings", err);
+      }
+    }
+
+    // Render table rows
+    function renderTable() {
+      const tbody = document.querySelector("#scheduleTable tbody");
+      tbody.innerHTML = "";
+      const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+      days.forEach(day => {
+        const tr = document.createElement("tr");
+        const tdDay = document.createElement("td");
+        tdDay.textContent = day;
+        const tdTimes = document.createElement("td");
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = bookings[day] || "";
+        input.dataset.day = day;
+        tdTimes.appendChild(input);
+        tr.appendChild(tdDay);
+        tr.appendChild(tdTimes);
+        tbody.appendChild(tr);
       });
     }
-  } catch (e) {
-    setMsg(document.getElementById('loginMsg'), 'Failed to load bookings', false);
-  }
-});
 
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  localStorage.removeItem('adminToken');
-  document.getElementById('adminBox').style.display = 'none';
-  document.getElementById('loginBox').style.display = 'block';
-});
-</script>
+    // Save button
+    document.getElementById("saveBtn").addEventListener("click", async () => {
+      const inputs = document.querySelectorAll("#scheduleTable input");
+      inputs.forEach(input => {
+        bookings[input.dataset.day] = input.value;
+      });
+      try {
+        await fetch(`${WORKER_URL}/update-bookings`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ bookings })
+        });
+        saveMsg.textContent = "Bookings updated successfully!";
+        setTimeout(() => saveMsg.textContent = "", 3000);
+      } catch (err) {
+        saveMsg.textContent = "Failed to save bookings";
+      }
+    });
+  </script>
+
 </body>
 </html>
