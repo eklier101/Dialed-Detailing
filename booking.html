@@ -2,47 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book a Detail | Dialed Detailing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Detailing – Dialed Detailing</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <h1>Book Your Appointment</h1>
-    <p>Dialed Detailing — professional detailing by local high schoolers</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="booking.html">Book Now</a>
+      <a href="admin.html">Admin</a>
+    </nav>
   </header>
 
-  <main class="booking-container">
+  <section class="form-section">
     <form id="bookingForm">
-      <label>Name</label>
-      <input type="text" id="name" required>
+      <label for="name">Full Name</label>
+      <input id="name" name="name" required>
 
-      <label>Phone</label>
-      <input type="tel" id="phone" required>
+      <label for="email">Email</label>
+      <input id="email" type="email" required>
 
-      <label>Vehicle Type</label>
+      <label for="vehicle">Vehicle Type</label>
       <select id="vehicle" required></select>
 
-      <label>Service Package</label>
+      <label for="service">Service</label>
       <select id="service" required></select>
 
-      <label>Add-Ons</label>
+      <label for="addons">Add-Ons</label>
       <select id="addons" multiple></select>
 
-      <label>Preferred Date</label>
-      <input type="date" id="date" required>
-
-      <label>Available Time</label>
+      <label for="time">Preferred Time</label>
       <select id="time" required></select>
 
-      <button type="submit">Confirm Booking</button>
+      <button type="submit">Submit Booking</button>
     </form>
-  </main>
+    <p id="confirm"></p>
+  </section>
 
-  <footer>
-    <p>&copy; 2025 Dialed Detailing</p>
-  </footer>
+  <script>
+    async function loadData() {
+      const res = await fetch('bookings.json');
+      const data = await res.json();
 
-  <script src="scripts/booking.js"></script>
+      const params = new URLSearchParams(window.location.search);
+      const preselect = params.get('service');
+
+      data.vehicleTypes.forEach(v => vehicle.insertAdjacentHTML('beforeend', `<option>${v}</option>`));
+      data.services.forEach(s => service.insertAdjacentHTML('beforeend', `<option${s.name===preselect?' selected':''}>${s.name}</option>`));
+      data.addons.forEach(a => addons.insertAdjacentHTML('beforeend', `<option>${a.name} (+$${a.price})</option>`));
+      data.availableTimes.forEach(t => time.insertAdjacentHTML('beforeend', `<option>${t}</option>`));
+    }
+
+    bookingForm.addEventListener('submit', e => {
+      e.preventDefault();
+      confirm.textContent = "✅ Thanks! We'll contact you soon to confirm your appointment.";
+      bookingForm.reset();
+    });
+
+    loadData();
+  </script>
 </body>
 </html>
