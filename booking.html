@@ -1,67 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Book a Detailing – Dialed Detailing</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>.container{max-width:700px;margin:2rem auto;background:#fff;padding:1rem;border-radius:8px;} label{display:block;margin-top:0.6rem;}</style>
 </head>
 <body>
   <header>
-    <h1>Book Your Appointment</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="booking.html">Book Now</a>
-      <a href="admin.html">Admin</a>
-    </nav>
+    <h1>Book an Appointment</h1>
+    <nav><a href="index.html">Home</a> <a href="admin.html">Admin</a></nav>
   </header>
 
-  <section class="form-section">
-    <form id="bookingForm">
-      <label for="name">Full Name</label>
-      <input id="name" name="name" required>
+  <main class="container">
+    <form id="bookForm">
+      <label>Name<input id="name" required /></label>
+      <label>Email<input id="email" type="email" required /></label>
+      <label>Phone<input id="phone" required /></label>
 
-      <label for="email">Email</label>
-      <input id="email" type="email" required>
+      <label>Vehicle
+        <select id="vehicle"></select>
+      </label>
 
-      <label for="vehicle">Vehicle Type</label>
-      <select id="vehicle" required></select>
+      <label>Service
+        <select id="service"></select>
+      </label>
 
-      <label for="service">Service</label>
-      <select id="service" required></select>
+      <label>Add-Ons (ctrl/cmd+click to multi)
+        <select id="addons" multiple size="3"></select>
+      </label>
 
-      <label for="addons">Add-Ons</label>
-      <select id="addons" multiple></select>
+      <label>Date<input id="date" type="date" required /></label>
 
-      <label for="time">Preferred Time</label>
-      <select id="time" required></select>
+      <label>Time
+        <select id="time"></select>
+      </label>
 
       <button type="submit">Submit Booking</button>
     </form>
-    <p id="confirm"></p>
-  </section>
 
-  <script>
-    async function loadData() {
-      const res = await fetch('bookings.json');
-      const data = await res.json();
+    <p id="msg"></p>
+  </main>
 
-      const params = new URLSearchParams(window.location.search);
-      const preselect = params.get('service');
+<script>
+const API_BASE = location.origin;
 
-      data.vehicleTypes.forEach(v => vehicle.insertAdjacentHTML('beforeend', `<option>${v}</option>`));
-      data.services.forEach(s => service.insertAdjacentHTML('beforeend', `<option${s.name===preselect?' selected':''}>${s.name}</option>`));
-      data.addons.forEach(a => addons.insertAdjacentHTML('beforeend', `<option>${a.name} (+$${a.price})</option>`));
-      data.availableTimes.forEach(t => time.insertAdjacentHTML('beforeend', `<option>${t}</option>`));
-    }
+async function loadSettings() {
+  try {
+    const res = await fetch('/settings');
+    if (!res.ok) throw new Error('No settings');
+    const data = await res.json();
 
-    bookingForm.addEventListener('submit', e => {
-      e.preventDefault();
-      confirm.textContent = "✅ Thanks! We'll contact you soon to confirm your appointment.";
-      bookingForm.reset();
+    const vehicle = document.getElementById('vehicle');
+    const service = document.getElementById('service');
+    const addons = document.getElementById('addons');
+    const time = document.getElementById('time');
+
+    vehicle.innerHTML = '';
+    service.innerHTML = '';
+    addons.innerHTML = '';
+    time.innerHTML = '';
+
+    data.vehicleTypes.forEach(v => vehicle.insertAdjacentHTML('beforeend', `<option>${v}</option>`));
+    data.services.forEach(s => service.insertAdjacentHTML('beforeend', `<option>${s.name}</option>`));
+    data.addons.forEach(a => addons.insertAdjacentHTML('beforeend', `<option>${a.name} (+$${a.price})</option>`));
+    data.availableTimes.forEach(t => time.insertAdjacentHTML('beforeend', `<option>${t}</option>`));
+  } catch(e) {
+    document.getElementById('msg').textContent = 'Failed to load booking settings.';
+  }
+}
+
+document.getElementById('bookForm').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const data = {
+    name: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    vehicle: document.getElementById('vehicle').value,
+    service: document.getElementById('service').value,
+    addons: Array.from(document.getElementById('addons').selectedOptions).map(o=>o.value),
+    date: document.getElementById('date').value,
+    time: document.getElementById('time').value
+  };
+  document.getElementById('msg').textContent = 'Submitting...';
+  try {
+    const res = await fetch('/book', {
+      method:'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
     });
+    const payload = await res.json();
+    if (payload.ok) {
+      document.getElementById('msg').textContent = 'Thanks — booking received. We will contact you to confirm.';
+      document.getElementById('bookForm').reset();
+    } else {
+      document.getElementById('msg').textContent = 'Failed: ' + (payload.message || 'unknown');
+    }
+  } catch (e) {
+    document.getElementById('msg').textContent = 'Error: ' + e.message;
+  }
+});
 
-    loadData();
-  </script>
+loadSettings();
+</script>
 </body>
 </html>
