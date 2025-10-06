@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a Detail | Dialed Detailing</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Book Your Appointment</h1>
+    <p>Dialed Detailing — professional detailing by local high schoolers</p>
+  </header>
 
+  <main class="booking-container">
+    <form id="bookingForm">
+      <label>Name</label>
+      <input type="text" id="name" required>
+
+      <label>Phone</label>
+      <input type="tel" id="phone" required>
+
+      <label>Vehicle Type</label>
+      <select id="vehicle" required></select>
+
+      <label>Service Package</label>
+      <select id="service" required></select>
+
+      <label>Add-Ons</label>
+      <select id="addons" multiple></select>
+
+      <label>Preferred Date</label>
+      <input type="date" id="date" required>
+
+      <label>Available Time</label>
+      <select id="time" required></select>
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Dialed Detailing</p>
+  </footer>
+
+  <script src="scripts/booking.js"></script>
+</body>
+</html>
