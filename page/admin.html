@@ -1,44 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin | Dialed Detailing</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – Dialed Detailing</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>Admin Dashboard</h1>
+    <h1>Admin Panel</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="booking.html">Bookings</a>
+    </nav>
   </header>
 
-  <main class="admin-container">
-    <div id="login-section">
-      <h2>Admin Login</h2>
-      <input type="email" id="adminEmail" placeholder="Email" required />
-      <input type="password" id="adminPassword" placeholder="Password" required />
-      <button id="loginBtn">Login</button>
-    </div>
+  <section id="login-section">
+    <h2>Admin Login</h2>
+    <form id="loginForm">
+      <label>Email</label>
+      <input id="email" type="email" required>
+      <label>Password</label>
+      <input id="password" type="password" required>
+      <button type="submit">Login</button>
+    </form>
+  </section>
 
-    <div id="admin-section" style="display:none;">
-      <h2>Booking Settings</h2>
+  <section id="admin-section" style="display:none;">
+    <h2>Edit Booking Settings</h2>
+    <textarea id="jsonEditor" rows="20" cols="80"></textarea><br>
+    <button id="saveBtn">Save Changes</button>
+    <p id="saveMsg"></p>
+  </section>
 
-      <h3>Available Times</h3>
-      <textarea id="availableTimes" rows="4"></textarea>
+  <script>
+    const ADMIN_EMAIL = "dialed-detailing@gmail.com";
+    const ADMIN_PASS = "YourSecurePassword123"; // change this!
 
-      <h3>Vehicle Types</h3>
-      <textarea id="vehicleTypes" rows="4"></textarea>
+    loginForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      if (email.value === ADMIN_EMAIL && password.value === ADMIN_PASS) {
+        loginSection.style.display = "none";
+        adminSection.style.display = "block";
+        const res = await fetch('bookings.json');
+        const data = await res.text();
+        jsonEditor.value = data;
+      } else {
+        alert("Incorrect login.");
+      }
+    });
 
-      <h3>Services (JSON Format)</h3>
-      <textarea id="services" rows="6"></textarea>
-
-      <h3>Add-Ons (JSON Format)</h3>
-      <textarea id="addons" rows="6"></textarea>
-
-      <button id="saveChanges">Save Changes (Local)</button>
-      <p><small>⚠️ This currently saves locally — not to GitHub yet.</small></p>
-    </div>
-  </main>
-
-  <script src="scripts/admin.js"></script>
+    saveBtn.addEventListener('click', () => {
+      // On GitHub Pages this won’t save back automatically (no backend).
+      // For now it just downloads the edited JSON.
+      const blob = new Blob([jsonEditor.value], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'bookings.json';
+      a.click();
+      saveMsg.textContent = "Download complete — replace bookings.json in your repo.";
+    });
+  </script>
 </body>
 </html>
